@@ -6,10 +6,9 @@
 #include <stdlib.h>
 
 typedef struct BST {
-    BST* left;
-    BST* right;
-    bool hasValue;
-    int value;
+	BST* left;
+	BST* right;
+	int value;
 } BST;
 
 BST* bstNew(int val)
@@ -32,45 +31,6 @@ void bstFree(BST** tree)
         bstFree(&t->right);
     free(t);
     *tree = NULL;
-}
-
-int* bstGetValue(BST* node)
-{
-    return node->hasValue ? &node->value : NULL;
-}
-
-bool bstInsert(BST* node, int val)
-{
-    if (node == NULL)
-        return false;
-    if (node->value == val)
-        return true;
-    if (node->value < val) {
-        if (node->left == NULL) {
-            node->left = bstNew(val);
-            if (node->left == NULL)
-                return false;
-            return true;
-        }
-        return bstInsert(node->left, val);
-    } else {
-        if (node->right == NULL) {
-            node->right = bstNew(val);
-            if (node->right == NULL)
-                return false;
-            return true;
-        }
-        return bstInsert(node->right, val);
-    }
-}
-bool bstContains(BST* node, int val)
-{
-    if (node == NULL)
-        return false;
-    if (node->value == val)
-        return true;
-
-    return bstContains(node->left, val) || bstContains(node->right, val);
 }
 
 void bstPreorder(BST* tree)
