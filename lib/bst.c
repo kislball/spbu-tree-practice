@@ -55,7 +55,6 @@ void bstPostorder(BST* tree)
 	bstPostorder(tree->left);
 	bstPostorder(tree->right);
 	printf("%d\n", tree->value);
-    return node->hasValue ? &node->value : NULL;
 }
 
 bool bstInsert(BST* node, int val)
