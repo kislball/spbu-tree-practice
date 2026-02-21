@@ -118,11 +118,11 @@ int bstMin(BST* bst)
 {
     dieIf(bst == NULL, "An empty tree has no minimum");
     int min = bst->value;
+    BST* child = bst->right;
 
-    if (bst->left) {
-        int left = bstMin(bst->left);
-        if (left < min)
-            min = left;
+    while (child) {
+	min = child->value;
+	child = child->right;
     }
 
     return min;
@@ -132,11 +132,11 @@ int bstMax(BST* bst)
 {
     dieIf(bst == NULL, "An empty tree has no maximum");
     int max = bst->value;
+    BST* child = bst->left;
 
-    if (bst->right) {
-        int right = bstMax(bst->right);
-        if (right > max)
-            max = right;
+    while (child) {
+	max = child->value;
+	child = child->left;
     }
 
     return max;
