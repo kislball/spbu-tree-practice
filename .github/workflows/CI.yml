@@ -1,0 +1,22 @@
+name: CI
+on: 
+  - push
+  - pull_request
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup checkout
+        uses: actions/checkout@v5
+      - name: Build project
+        run: | 
+          cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          cmake --build build
+      - name: Run clang-tidy
+        run: | 
+          run-clang-tidy -p=build -checks=-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+      - name: Run clang-format
+        run: |
+          find .  -name "*.c" -o -name "*.h" | xargs clang-format -i --style=Webkit --dry-run -Werror
+
+  
