@@ -1,7 +1,7 @@
 #include "bst.h"
 #include <assert.h>
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,23 +11,26 @@ typedef struct BST {
 	int value;
 } BST;
 
-BST* bstNew()
+BST* bstNew(int val)
 {
-	BST* tree = calloc(1, sizeof(*tree));
-	if (tree == NULL) {
-		assert(false && "Failed to allocate memory for tree");
-		return NULL;
-	}
-	return tree;
+    BST* tree = calloc(1, sizeof(*tree));
+    if (tree == NULL) {
+        assert(false && "Failed to allocate memory for tree");
+        return NULL;
+    }
+    tree->value = val;
+    return tree;
 }
 
 void bstFree(BST** tree)
 {
-	BST* t = *tree;
-	if (t->left) bstFree(&t->left);
-	if (t->right) bstFree(&t->right);
-	free(t);
-	*tree = NULL;
+    BST* t = *tree;
+    if (t->left)
+        bstFree(&t->left);
+    if (t->right)
+        bstFree(&t->right);
+    free(t);
+    *tree = NULL;
 }
 
 void bstPreorder(BST* tree)
@@ -52,4 +55,38 @@ void bstPostorder(BST* tree)
 	bstPostorder(tree->left);
 	bstPostorder(tree->right);
 	printf("%d\n", tree->value);
+}
+
+bool bstInsert(BST* node, int val)
+{
+    if (node == NULL)
+        return false;
+    if (node->value == val)
+        return true;
+    if (node->value < val) {
+        if (node->left == NULL) {
+            node->left = bstNew(val);
+            if (node->left == NULL)
+                return false;
+            return true;
+        }
+        return bstInsert(node->left, val);
+    } else {
+        if (node->right == NULL) {
+            node->right = bstNew(val);
+            if (node->right == NULL)
+                return false;
+            return true;
+        }
+        return bstInsert(node->right, val);
+    }
+}
+bool bstContains(BST* node, int val)
+{
+    if (node == NULL)
+        return false;
+    if (node->value == val)
+        return true;
+
+    return bstContains(node->left, val) || bstContains(node->right, val);
 }
