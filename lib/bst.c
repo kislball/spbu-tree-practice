@@ -67,7 +67,7 @@ bool bstInsert(BST* node, int val)
         return false;
     if (node->value == val)
         return true;
-    if (node->value < val) {
+    if (node->value > val) {
         if (node->left == NULL) {
             node->left = bstNew(val);
             if (node->left == NULL)
@@ -118,11 +118,11 @@ int bstMin(BST* bst)
 {
     dieIf(bst == NULL, "An empty tree has no minimum");
     int min = bst->value;
-    BST* child = bst->right;
+    BST* child = bst->left;
 
     while (child) {
-	min = child->value;
-	child = child->right;
+        min = child->value;
+        child = child->left;
     }
 
     return min;
@@ -132,11 +132,11 @@ int bstMax(BST* bst)
 {
     dieIf(bst == NULL, "An empty tree has no maximum");
     int max = bst->value;
-    BST* child = bst->left;
+    BST* child = bst->right;
 
     while (child) {
-	max = child->value;
-	child = child->left;
+        max = child->value;
+        child = child->right;
     }
 
     return max;
