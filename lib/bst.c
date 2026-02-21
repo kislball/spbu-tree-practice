@@ -72,3 +72,27 @@ bool bstContains(BST* node, int val)
 
     return bstContains(node->left, val) || bstContains(node->right, val);
 }
+
+void bstPreorder(BST* tree)
+{
+	if (tree == NULL) return;
+	printf("%d\n", tree->value);
+	bstPreorder(tree->left);
+	bstPreorder(tree->right);
+}
+
+void bstInorder(BST* tree)
+{
+	if (tree == NULL) return;
+	bstInorder(tree->left);
+	printf("%d\n", tree->value);
+	bstInorder(tree->right);
+}
+
+void bstPostorder(BST* tree)
+{
+	if (tree == NULL) return;
+	bstPostorder(tree->left);
+	bstPostorder(tree->right);
+	printf("%d\n", tree->value);
+}
