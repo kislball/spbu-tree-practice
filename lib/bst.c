@@ -8,7 +8,6 @@
 typedef struct BST {
 	BST* left;
 	BST* right;
-	bool hasValue;
 	int value;
 } BST;
 
@@ -29,9 +28,4 @@ void bstFree(BST** tree)
 	if (t->right) bstFree(&t->right);
 	free(t);
 	*tree = NULL;
-}
-
-int* bstGetValue(BST* node)
-{
-	return node->hasValue ? &node->value : NULL;
 }
