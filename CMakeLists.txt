@@ -16,3 +16,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_STANDARD 23)
 
 add_subdirectory(lib)
+add_subdirectory(tests)
