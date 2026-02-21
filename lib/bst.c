@@ -82,6 +82,7 @@ bool bstInsert(BST* node, int val)
         return bstInsert(node->right, val);
     }
 }
+
 bool bstContains(BST* node, int val)
 {
     if (node == NULL)
@@ -115,7 +116,7 @@ int bstMin(BST* bst)
     
     if (bst->left) {
     	int left = bstMin(bst->left);
-    	if (left > min) min = left;
+    	if (left < min) min = left;
     }
     
     return min;
@@ -124,12 +125,12 @@ int bstMin(BST* bst)
 int bstMax(BST* bst)
 {
     dieIf(bst == NULL, "An empty tree has no maximum");
-    int min = bst->value;
+    int max = bst->value;
     
     if (bst->right) {
-    	int right = bstMin(bst->right);
-    	if (right > min) min = right;
+    	int right = bstMax(bst->right);
+    	if (right > max) max = right;
     }
     
-    return min;
+    return max;
 }
