@@ -1,4 +1,5 @@
 #include "bst.h"
+#include "die.h"
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -89,4 +90,46 @@ bool bstContains(BST* node, int val)
         return true;
 
     return bstContains(node->left, val) || bstContains(node->right, val);
+}
+
+int bstSize(BST* bst)
+{
+    if (bst == NULL) return 0;
+    return 1 + bstSize(bst->left) + bstSize(bst->right);
+}
+
+int bstHeight(BST* bst)
+{
+    if (bst == NULL) return 0;
+
+    int left = bstHeight(bst->left);
+    int right = bstHeight(bst->right);
+
+    return 1 + (left > right ? left : right);
+}
+
+int bstMin(BST* bst)
+{
+    dieIf(bst == NULL, "An empty tree has no minimum");
+    int min = bst->value;
+    
+    if (bst->left) {
+    	int left = bstMin(bst->left);
+    	if (left > min) min = left;
+    }
+    
+    return min;
+}
+
+int bstMax(BST* bst)
+{
+    dieIf(bst == NULL, "An empty tree has no maximum");
+    int min = bst->value;
+    
+    if (bst->right) {
+    	int right = bstMin(bst->right);
+    	if (right > min) min = right;
+    }
+    
+    return min;
 }
