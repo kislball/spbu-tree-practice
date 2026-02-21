@@ -16,7 +16,7 @@ int main()
 	assert(bstContains(tree, 8));
 	assert(bstMin(tree) == 8);
 	assert(bstMax(tree) == 503);
-	assert(bstSize(tree) == 4);
+	assert(bstSize(tree) == 5);
 
 	return 0;
 }
