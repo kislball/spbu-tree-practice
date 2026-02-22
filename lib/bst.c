@@ -10,6 +10,7 @@ typedef struct BST {
     BST* left;
     BST* right;
     int value;
+    unsigned modVersion;
 } BST;
 
 BST* bstNew(int val)
@@ -61,29 +62,38 @@ void bstPostorder(BST* tree)
     printf("%d\n", tree->value);
 }
 
-bool bstInsert(BST* node, int val)
+bool bstInsert(BST* node, int val, bool* err)
 {
-    if (node == NULL)
+    if (node == NULL) {
+        *err = true;
         return false;
-    if (node->value == val)
-        return true;
+    }
+    if (node->value == val) {
+        *err = false;
+        return false;
+    }
+
+    bool res = false;
     if (node->value > val) {
         if (node->left == NULL) {
             node->left = bstNew(val);
-            if (node->left == NULL)
-                return false;
-            return true;
+            res = node->left != NULL;
+            *err = !res;
         }
-        return bstInsert(node->left, val);
+        else {
+            res = bstInsert(node->left, val, err);
+        }
     } else {
         if (node->right == NULL) {
             node->right = bstNew(val);
-            if (node->right == NULL)
-                return false;
-            return true;
+            res = node->left != NULL;
+            *err = !res;
         }
-        return bstInsert(node->right, val);
+        return bstInsert(node->right, val, err);
     }
+    if (res)
+        node->modVersion++;
+    return res;
 }
 
 bool bstContains(BST* node, int val)

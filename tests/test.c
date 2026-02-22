@@ -5,10 +5,15 @@
 int main()
 {
     BST* tree = bstNew(25);
-    bstInsert(tree, 15);
-    bstInsert(tree, 20);
-    bstInsert(tree, 503);
-    bstInsert(tree, 8);
+    bool err = false;
+    bstInsert(tree, 15, &err);
+    assert(!err);
+    bstInsert(tree, 20, &err);
+    assert(!err);
+    bstInsert(tree, 503, &err);
+    assert(!err);
+    bstInsert(tree, 8, &err);
+    assert(!err);
 
     assert(bstContains(tree, 15));
     assert(bstContains(tree, 20));
