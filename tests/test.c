@@ -20,7 +20,6 @@ void testIterators()
         assert(iteratorIsValid(it));
         assert(iteratorHasNext(it));
         int val = iteratorNext(it);
-        printf("Contain: %d, expected: %d\n", val, i+1);
         assert(val == i+1);
     }
 
@@ -28,6 +27,14 @@ void testIterators()
     assert(!iteratorIsValid(it));
 
     iteratorFree(&it);
+
+    it = iteratorInit(tree);
+    assert(bstInsert(tree, 1));
+    assert(iteratorIsValid(it));
+    assert(bstInsert(tree, 123));
+    assert(!iteratorIsValid(it));
+    iteratorFree(&it);
+    bstFree(&tree);
 }
 
 int main()

@@ -76,12 +76,6 @@ Iterator* iteratorInit(BST* tree)
         free(it);
         return NULL;
     }
-    StackNode* temp = it->head;
-    while (temp) {
-        printf("%d ", temp->data->value);
-        temp = temp->prev;
-    }
-    putchar('\n');
     return it;
 }
 
