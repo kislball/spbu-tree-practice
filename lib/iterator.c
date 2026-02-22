@@ -1,7 +1,7 @@
 #include "iterator.h"
+#include "bst.c"
 #include "bst.h"
 #include <stdlib.h>
-#include "bst.c"
 
 typedef struct StackNode {
     struct StackNode* prev;
@@ -108,7 +108,8 @@ bool iteratorIsValid(Iterator* it)
     return nodeVersion == it->modVersion;
 }
 
-void iteratorFree(Iterator **it){
+void iteratorFree(Iterator** it)
+{
     if (it == NULL || *it == NULL)
         return;
     stackFree((*it)->head);

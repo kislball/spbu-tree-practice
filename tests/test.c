@@ -8,9 +8,9 @@ void testIterators()
     BST* tree = bstNew(4);
     assert(tree != NULL);
 
-    int valuesToInsert []= {2,1,3,6,5,7,9,8};
+    int valuesToInsert[] = { 2, 1, 3, 6, 5, 7, 9, 8 };
     for (unsigned i = 0; i < sizeof(valuesToInsert) / sizeof(valuesToInsert[0]); i++) {
-        assert (bstInsert(tree, valuesToInsert[i]));
+        assert(bstInsert(tree, valuesToInsert[i]));
     }
 
     Iterator* it = iteratorInit(tree);
@@ -20,7 +20,7 @@ void testIterators()
         assert(iteratorIsValid(it));
         assert(iteratorHasNext(it));
         int val = iteratorNext(it);
-        assert(val == i+1);
+        assert(val == i + 1);
     }
 
     assert(!iteratorHasNext(it));

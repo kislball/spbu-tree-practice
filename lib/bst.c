@@ -87,8 +87,7 @@ static bool bstInsertInternal(BST* root, BST* node, int val, bool* err)
             *err = !res;
             if (res)
                 node->left->modVersion.pBase = &root->modVersion.base;
-        }
-        else {
+        } else {
             res = bstInsertInternal(root, node->left, val, err);
         }
     } else {
