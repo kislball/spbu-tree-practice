@@ -86,10 +86,11 @@ bool bstInsert(BST* node, int val, bool* err)
     } else {
         if (node->right == NULL) {
             node->right = bstNew(val);
-            res = node->left != NULL;
+            res = node->right != NULL;
             *err = !res;
+        } else {
+            return bstInsert(node->right, val, err);
         }
-        return bstInsert(node->right, val, err);
     }
     if (res)
         node->modVersion++;
