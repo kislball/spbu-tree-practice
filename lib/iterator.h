@@ -16,7 +16,7 @@ bool iteratorHasNext(Iterator* it);
 // возвращает всегда 0.
 int iteratorNext(Iterator* it);
 // Освобождает память, занятую итератором.
-void iteratorFree(Iterator* it);
+void iteratorFree(Iterator** it);
 // false - если итератор использует изменённое дерево,
 // true - в другом случае.
 bool iteratorIsValid(Iterator* it);

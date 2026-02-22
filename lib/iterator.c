@@ -34,11 +34,13 @@ static void stackFree(StackNode* node)
 }
 
 // Проходится до крайнего левого листа, записывая всё в StackNode
-static StackNode* traverseToLeft(BST* tree)
+// Возвращает NULL, если дерево пусто или не удалось выделить память.
+// prev нужен для реализации обхода
+static StackNode* traverseToLeft(BST* tree, StackNode* prev)
 {
     if (tree == NULL)
         return NULL;
-    StackNode* node = allocStackNode(tree, NULL);
+    StackNode* node = allocStackNode(tree, prev);
     if (node == NULL)
         return NULL;
 
@@ -66,10 +68,44 @@ Iterator* iteratorInit(BST* tree)
     }
 
     it->modVersion = tree->modVersion;
-    it->head = traverseToLeft(tree);
+    it->head = traverseToLeft(tree, NULL);
     if (it->head == NULL) {
         free(it);
         return NULL;
     }
     return it;
+}
+
+bool iteratorHasNext(Iterator* it)
+{
+    return it != NULL && it->head != NULL;
+}
+
+int iteratorNext(Iterator* it)
+{
+    if (it == NULL)
+        return 0;
+    StackNode* curNode = it->head;
+    if (curNode == NULL || !iteratorIsValid(it))
+        return 0;
+
+    StackNode* nextNodes = traverseToLeft(curNode->data->right, curNode->prev);
+    it->head = nextNodes == NULL ? curNode->prev : nextNodes;
+
+    int result = curNode->data->value;
+    free(curNode);
+    return result;
+}
+
+bool iteratorIsValid(Iterator* it)
+{
+    return it != NULL && (it->head == NULL || it->head->data->modVersion == it->modVersion);
+}
+
+void iteratorFree(Iterator **it){
+    if (it == NULL || *it == NULL)
+        return;
+    stackFree((*it)->head);
+    free(*it);
+    *it = NULL;
 }
