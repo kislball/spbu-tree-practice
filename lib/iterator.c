@@ -9,6 +9,7 @@ typedef struct StackNode {
 } StackNode;
 
 struct Iterator {
+    BST* root;
     struct StackNode* head;
     unsigned modVersion;
 };
@@ -44,7 +45,8 @@ static StackNode* traverseToLeft(BST* tree, StackNode* prev)
     if (node == NULL)
         return NULL;
 
-    while (tree->left) {
+    tree = tree->left;
+    while (tree) {
         StackNode* newNode = allocStackNode(tree, node);
         if (newNode == NULL)
             stackFree(node);
@@ -60,6 +62,7 @@ Iterator* iteratorInit(BST* tree)
     if (it == NULL)
         return NULL;
 
+    it->root = tree;
     // Итератор на пустом дереве.
     if (tree == NULL) {
         it->head = NULL;
@@ -67,12 +70,18 @@ Iterator* iteratorInit(BST* tree)
         return it;
     }
 
-    it->modVersion = tree->modVersion;
+    it->modVersion = tree->modVersion.base;
     it->head = traverseToLeft(tree, NULL);
     if (it->head == NULL) {
         free(it);
         return NULL;
     }
+    StackNode* temp = it->head;
+    while (temp) {
+        printf("%d ", temp->data->value);
+        temp = temp->prev;
+    }
+    putchar('\n');
     return it;
 }
 
@@ -99,7 +108,10 @@ int iteratorNext(Iterator* it)
 
 bool iteratorIsValid(Iterator* it)
 {
-    return it != NULL && (it->head == NULL || it->head->data->modVersion == it->modVersion);
+    if (it == NULL || it->head == NULL)
+        return false;
+    unsigned nodeVersion = it->head->data == it->root ? it->root->modVersion.base : *it->head->data->modVersion.pBase;
+    return nodeVersion == it->modVersion;
 }
 
 void iteratorFree(Iterator **it){

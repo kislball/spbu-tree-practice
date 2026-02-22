@@ -10,7 +10,11 @@ typedef struct BST {
     BST* left;
     BST* right;
     int value;
-    unsigned modVersion;
+    // Actual value for root and pointer for children
+    union {
+        unsigned base;
+        unsigned* pBase;
+    } modVersion;
 } BST;
 
 BST* bstNew(int val)
@@ -62,7 +66,9 @@ void bstPostorder(BST* tree)
     printf("%d\n", tree->value);
 }
 
-bool bstInsert(BST* node, int val, bool* err)
+// Возвращает true, если дерево было изменено,
+// при наличии ошибки записывает *err = true.
+static bool bstInsertInternal(BST* root, BST* node, int val, bool* err)
 {
     if (node == NULL) {
         *err = true;
@@ -79,22 +85,33 @@ bool bstInsert(BST* node, int val, bool* err)
             node->left = bstNew(val);
             res = node->left != NULL;
             *err = !res;
+            if (res)
+                node->left->modVersion.pBase = &root->modVersion.base;
         }
         else {
-            res = bstInsert(node->left, val, err);
+            res = bstInsertInternal(root, node->left, val, err);
         }
     } else {
         if (node->right == NULL) {
             node->right = bstNew(val);
             res = node->right != NULL;
             *err = !res;
+            if (res)
+                node->right->modVersion.pBase = &root->modVersion.base;
         } else {
-            return bstInsert(node->right, val, err);
+            res = bstInsertInternal(root, node->right, val, err);
         }
     }
-    if (res)
-        node->modVersion++;
     return res;
+}
+
+bool bstInsert(BST* root, int value)
+{
+    bool err = false;
+    bool res = bstInsertInternal(root, root, value, &err);
+    if (res)
+        root->modVersion.base++;
+    return !err;
 }
 
 bool bstContains(BST* node, int val)
