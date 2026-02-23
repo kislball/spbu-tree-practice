@@ -11,7 +11,7 @@ void testIterators()
     int valuesToInsert[] = { 2, 1, 3, 6, 5, 7, 9, 8 };
     for (unsigned i = 0; i < sizeof(valuesToInsert) / sizeof(valuesToInsert[0]); i++) {
         assert(bstInsert(tree, valuesToInsert[i]));
-	assert(bstIsValid(tree));
+        assert(bstIsValid(tree));
     }
 
     Iterator* it = iteratorInit(tree);

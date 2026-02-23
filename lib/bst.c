@@ -173,20 +173,21 @@ int bstMax(BST* bst)
 
 bool bstIsValid(BST* tree)
 {
-	bool res = true;
-	if (tree == NULL) return true; // Lets consider an empty tree a valid one
-	Iterator* it = iteratorInit(tree);
-	int prev = iteratorNext(it);
+    bool res = true;
+    if (tree == NULL)
+        return true; // Lets consider an empty tree a valid one
+    Iterator* it = iteratorInit(tree);
+    int prev = iteratorNext(it);
 
-	while (iteratorHasNext(it)) {
-		int val = iteratorNext(it);
-		if (val <= prev) {
-			res = false;
-			break;
-		}
-		prev = val;
-	}
+    while (iteratorHasNext(it)) {
+        int val = iteratorNext(it);
+        if (val <= prev) {
+            res = false;
+            break;
+        }
+        prev = val;
+    }
 
-	iteratorFree(&it);
-	return res;
+    iteratorFree(&it);
+    return res;
 }
