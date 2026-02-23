@@ -1,14 +1,49 @@
 #include "bst.h"
+#include "iterator.h"
 #include <assert.h>
 #include <stdio.h>
+
+void testIterators()
+{
+    BST* tree = bstNew(4);
+    assert(tree != NULL);
+
+    int valuesToInsert[] = { 2, 1, 3, 6, 5, 7, 9, 8 };
+    for (unsigned i = 0; i < sizeof(valuesToInsert) / sizeof(valuesToInsert[0]); i++) {
+        assert(bstInsert(tree, valuesToInsert[i]));
+    }
+
+    Iterator* it = iteratorInit(tree);
+    assert(it != NULL);
+    int count = sizeof(valuesToInsert) / sizeof(valuesToInsert[0]) + 1;
+    for (int i = 0; i < count; i++) {
+        assert(iteratorIsValid(it));
+        assert(iteratorHasNext(it));
+        int val = iteratorNext(it);
+        assert(val == i + 1);
+    }
+
+    assert(!iteratorHasNext(it));
+    assert(!iteratorIsValid(it));
+
+    iteratorFree(&it);
+
+    it = iteratorInit(tree);
+    assert(bstInsert(tree, 1));
+    assert(iteratorIsValid(it));
+    assert(bstInsert(tree, 123));
+    assert(!iteratorIsValid(it));
+    iteratorFree(&it);
+    bstFree(&tree);
+}
 
 int main()
 {
     BST* tree = bstNew(25);
-    bstInsert(tree, 15);
-    bstInsert(tree, 20);
-    bstInsert(tree, 503);
-    bstInsert(tree, 8);
+    assert(bstInsert(tree, 15));
+    assert(bstInsert(tree, 20));
+    assert(bstInsert(tree, 503));
+    assert(bstInsert(tree, 8));
 
     assert(bstContains(tree, 15));
     assert(bstContains(tree, 20));
@@ -18,5 +53,6 @@ int main()
     assert(bstMax(tree) == 503);
     assert(bstSize(tree) == 5);
 
+    testIterators();
     return 0;
 }

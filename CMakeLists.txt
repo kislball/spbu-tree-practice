@@ -7,6 +7,10 @@ else()
         add_compile_options(-Wall -Wextra -Wpedantic)        
 endif()
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_compile_options(-g)
+endif()
+
 include(CTest)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

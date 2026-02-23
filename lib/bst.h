@@ -7,6 +7,7 @@ typedef struct BST BST;
 // Инициализация дерева поиска.
 BST* bstNew(int);
 // Добавление узла в дерево.
+// Если функция возвращает false, то произошла ошибка при вставке.
 bool bstInsert(BST*, int);
 // Проверяет наличие значения в дереве.
 bool bstContains(BST*, int);

@@ -6,11 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct BST {
-    BST* left;
-    BST* right;
-    int value;
-} BST;
+#include "bstInternal.h"
 
 BST* bstNew(int val)
 {
@@ -20,6 +16,20 @@ BST* bstNew(int val)
         return NULL;
     }
     tree->value = val;
+    tree->isRoot = true;
+    return tree;
+}
+
+static BST* bstNewChild(BST* root, int val)
+{
+    BST* tree = calloc(1, sizeof(*tree));
+    if (tree == NULL) {
+        assert(false && "Failed to allocate memory for tree");
+        return NULL;
+    }
+    tree->value = val;
+    tree->isRoot = false;
+    tree->modVersion.pBase = &root->modVersion.base;
     return tree;
 }
 
@@ -61,29 +71,47 @@ void bstPostorder(BST* tree)
     printf("%d\n", tree->value);
 }
 
-bool bstInsert(BST* node, int val)
+// Возвращает true, если дерево было изменено,
+// при наличии ошибки записывает *err = true.
+static bool bstInsertInternal(BST* root, BST* node, int val, bool* err)
 {
-    if (node == NULL)
+    if (node == NULL) {
+        *err = true;
         return false;
-    if (node->value == val)
-        return true;
+    }
+    if (node->value == val) {
+        *err = false;
+        return false;
+    }
+
+    bool res = false;
     if (node->value > val) {
         if (node->left == NULL) {
-            node->left = bstNew(val);
-            if (node->left == NULL)
-                return false;
-            return true;
+            node->left = bstNewChild(root, val);
+            res = node->left != NULL;
+            *err = !res;
+        } else {
+            res = bstInsertInternal(root, node->left, val, err);
         }
-        return bstInsert(node->left, val);
     } else {
         if (node->right == NULL) {
-            node->right = bstNew(val);
-            if (node->right == NULL)
-                return false;
-            return true;
+            node->right = bstNewChild(root, val);
+            res = node->right != NULL;
+            *err = !res;
+        } else {
+            res = bstInsertInternal(root, node->right, val, err);
         }
-        return bstInsert(node->right, val);
     }
+    return res;
+}
+
+bool bstInsert(BST* root, int value)
+{
+    bool err = false;
+    bool res = bstInsertInternal(root, root, value, &err);
+    if (res)
+        root->modVersion.base++;
+    return !err;
 }
 
 bool bstContains(BST* node, int val)
