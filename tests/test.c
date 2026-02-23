@@ -1,7 +1,20 @@
+#include "bst.c"
 #include "bst.h"
 #include "iterator.h"
 #include <assert.h>
 #include <stdio.h>
+
+BST* getInvalidTree()
+{
+    BST* tree = bstNew(9);
+    tree->left = bstNewChild(tree, 8);
+    tree->left->left = bstNewChild(tree, 7);
+    tree->left->right = bstNewChild(tree, 11);
+    tree->right = bstNewChild(tree, 10);
+    tree->right->left = bstNewChild(tree, 2);
+    tree->right->right = bstNewChild(tree, 15);
+    return tree;
+}
 
 void testIterators()
 {
@@ -41,6 +54,14 @@ void testIterators()
     assert(bstIsValid(tree));
     iteratorFree(&it);
     bstFree(&tree);
+}
+
+void testInvalidTree()
+{
+    BST* invalid = getInvalidTree();
+
+    assert(!bstIsValid(invalid));
+    bstFree(&invalid);
 }
 
 int main()
