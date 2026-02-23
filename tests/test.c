@@ -1,4 +1,4 @@
-#include "bst.c"
+#include "bstInternal.h"
 #include "bst.h"
 #include "iterator.h"
 #include <assert.h>
