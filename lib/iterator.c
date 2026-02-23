@@ -1,6 +1,5 @@
 #include "iterator.h"
-#include "bst.c"
-#include "bst.h"
+#include "bstInternal.h"
 #include <stdlib.h>
 
 typedef struct StackNode {

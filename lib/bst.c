@@ -6,16 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct BST {
-    BST* left;
-    BST* right;
-    int value;
-    // Actual value for root and pointer for children
-    union {
-        unsigned base;
-        unsigned* pBase;
-    } modVersion;
-} BST;
+#include "bstInternal.h"
 
 BST* bstNew(int val)
 {
