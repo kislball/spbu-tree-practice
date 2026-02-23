@@ -16,6 +16,20 @@ BST* bstNew(int val)
         return NULL;
     }
     tree->value = val;
+    tree->isRoot = true;
+    return tree;
+}
+
+static BST* bstNewChild(BST* root, int val)
+{
+    BST* tree = calloc(1, sizeof(*tree));
+    if (tree == NULL) {
+        assert(false && "Failed to allocate memory for tree");
+        return NULL;
+    }
+    tree->value = val;
+    tree->isRoot = false;
+    tree->modVersion.pBase = &root->modVersion.base;
     return tree;
 }
 
@@ -73,21 +87,17 @@ static bool bstInsertInternal(BST* root, BST* node, int val, bool* err)
     bool res = false;
     if (node->value > val) {
         if (node->left == NULL) {
-            node->left = bstNew(val);
+            node->left = bstNewChild(root, val);
             res = node->left != NULL;
             *err = !res;
-            if (res)
-                node->left->modVersion.pBase = &root->modVersion.base;
         } else {
             res = bstInsertInternal(root, node->left, val, err);
         }
     } else {
         if (node->right == NULL) {
-            node->right = bstNew(val);
+            node->right = bstNewChild(root, val);
             res = node->right != NULL;
             *err = !res;
-            if (res)
-                node->right->modVersion.pBase = &root->modVersion.base;
         } else {
             res = bstInsertInternal(root, node->right, val, err);
         }
