@@ -30,3 +30,5 @@ int bstMin(BST* tree);
 int bstMax(BST* tree);
 // Проверяет правильность бинарного дерева. Пустое дерево считаем правильным.
 bool bstIsValid(BST* tree);
+// Объединяет два дерева в одно. В случае ошибки возвращает NULL
+BST* bstMerge(BST*, BST*);
