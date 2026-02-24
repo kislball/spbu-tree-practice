@@ -17,7 +17,8 @@ BST* bstNew(int val)
         return NULL;
     }
     tree->value = val;
-    tree->isRoot = true;
+    tree->data.isRoot = true;
+    tree->data.childrenCount = 0;
     return tree;
 }
 
@@ -29,7 +30,8 @@ BST* bstNewChild(BST* root, int val)
         return NULL;
     }
     tree->value = val;
-    tree->isRoot = false;
+    tree->data.isRoot = false;
+    tree->data.childrenCount = 0;
     tree->modVersion.pBase = &root->modVersion.base;
     return tree;
 }
@@ -103,6 +105,8 @@ static bool bstInsertInternal(BST* root, BST* node, int val, bool* err)
             res = bstInsertInternal(root, node->right, val, err);
         }
     }
+    if (res)
+        node->data.childrenCount++;
     return res;
 }
 
@@ -129,7 +133,7 @@ int bstSize(BST* bst)
 {
     if (bst == NULL)
         return 0;
-    return 1 + bstSize(bst->left) + bstSize(bst->right);
+    return 1 + bst->data.childrenCount;
 }
 
 int bstHeight(BST* bst)
