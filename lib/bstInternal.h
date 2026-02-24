@@ -15,3 +15,4 @@ typedef struct BST {
         unsigned* pBase;
     } modVersion;
 } BST;
+BST* bstNewChild(BST* root, int val);

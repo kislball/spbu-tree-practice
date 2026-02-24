@@ -8,6 +8,7 @@
 
 #include "bstInternal.h"
 
+#include "iterator.h"
 BST* bstNew(int val)
 {
     BST* tree = calloc(1, sizeof(*tree));
@@ -20,7 +21,7 @@ BST* bstNew(int val)
     return tree;
 }
 
-static BST* bstNewChild(BST* root, int val)
+BST* bstNewChild(BST* root, int val)
 {
     BST* tree = calloc(1, sizeof(*tree));
     if (tree == NULL) {
@@ -168,4 +169,25 @@ int bstMax(BST* bst)
     }
 
     return max;
+}
+
+bool bstIsValid(BST* tree)
+{
+    bool res = true;
+    if (tree == NULL)
+        return true; // Lets consider an empty tree a valid one
+    Iterator* it = iteratorInit(tree);
+    int prev = iteratorNext(it);
+
+    while (iteratorHasNext(it)) {
+        int val = iteratorNext(it);
+        if (val <= prev) {
+            res = false;
+            break;
+        }
+        prev = val;
+    }
+
+    iteratorFree(&it);
+    return res;
 }
