@@ -21,7 +21,7 @@ BST* bstNew(int val)
     return tree;
 }
 
-static BST* bstNewChild(BST* root, int val)
+BST* bstNewChild(BST* root, int val)
 {
     BST* tree = calloc(1, sizeof(*tree));
     if (tree == NULL) {

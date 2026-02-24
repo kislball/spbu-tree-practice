@@ -1,5 +1,5 @@
-#include "bst.c"
 #include "bst.h"
+#include "bstInternal.h"
 #include "iterator.h"
 #include <assert.h>
 #include <stdio.h>
