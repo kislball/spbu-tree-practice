@@ -64,6 +64,43 @@ void testInvalidTree()
     bstFree(&invalid);
 }
 
+void testMerge()
+{
+    BST* treeA = bstNew(25);
+    assert(bstInsert(treeA, 15));
+    assert(bstIsValid(treeA));
+    assert(bstInsert(treeA, 20));
+    assert(bstIsValid(treeA));
+    assert(bstInsert(treeA, 503));
+    assert(bstIsValid(treeA));
+    assert(bstInsert(treeA, 8));
+    assert(bstIsValid(treeA));
+
+    BST* treeB = bstNew(16);
+    assert(bstInsert(treeB, 15));
+    assert(bstIsValid(treeB));
+    assert(bstInsert(treeB, 431));
+    assert(bstIsValid(treeB));
+    assert(bstInsert(treeB, 652));
+    assert(bstIsValid(treeB));
+    assert(bstInsert(treeB, 32));
+    assert(bstIsValid(treeB));
+
+    BST* final = bstMerge(treeA, treeB);
+
+    int values[] = { 25, 15, 20, 503, 8, 16, 431, 652, 32 };
+    int totalValues = sizeof(values) / sizeof(*values);
+    assert(bstSize(final) == totalValues);
+
+    for (int i = 0; i < totalValues; i++) {
+        assert(bstContains(final, values[i]));
+    }
+
+    bstFree(&treeA);
+    bstFree(&treeB);
+    bstFree(&final);
+}
+
 int main()
 {
     BST* tree = bstNew(25);
@@ -85,5 +122,6 @@ int main()
     assert(bstSize(tree) == 5);
 
     testIterators();
+    testMerge();
     return 0;
 }

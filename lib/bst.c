@@ -191,3 +191,46 @@ bool bstIsValid(BST* tree)
     iteratorFree(&it);
     return res;
 }
+
+BST* bstMerge(BST* a, BST* b)
+{
+    Iterator* itA = iteratorInit(a);
+    Iterator* itB = iteratorInit(b);
+
+    int firstElement = 0;
+    if (iteratorHasNext(itA))
+        firstElement = iteratorNext(itA);
+    else if (iteratorHasNext(itB))
+        firstElement = iteratorNext(itB);
+    else {
+        iteratorFree(&itA);
+        iteratorFree(&itB);
+        return NULL;
+    }
+
+    BST* tree = bstNew(firstElement);
+
+    while (iteratorHasNext(itA)) {
+        bool ok = bstInsert(tree, iteratorNext(itA));
+        if (!ok) {
+            iteratorFree(&itA);
+            iteratorFree(&itB);
+            bstFree(&tree);
+            return NULL;
+        }
+    }
+
+    while (iteratorHasNext(itB)) {
+        bool ok = bstInsert(tree, iteratorNext(itB));
+        if (!ok) {
+            iteratorFree(&itA);
+            iteratorFree(&itB);
+            bstFree(&tree);
+            return NULL;
+        }
+    }
+
+    iteratorFree(&itA);
+    iteratorFree(&itB);
+    return tree;
+}
