@@ -237,19 +237,22 @@ BST* bstMerge(BST* a, BST* b)
     iteratorFree(&itA);
     iteratorFree(&itB);
     return tree;
+}
+
 int bstKthMin(BST* tree, int k)
 {
-    if (k <= 0 || tree == NULL|| bstSize(tree) > k)
+    if (k <= 0 || tree == NULL || bstSize(tree) < k)
         return 0;
 
     /* k is the kth minimum element of the subtree */
     BST* p = tree;
     while (k > 0) {
-        int curK = tree->data.childrenCount + 1;
+        int curK = bstSize(p->left) + 1;
         if (curK == k)
             break;
-        if (curK > k) {
-            k-=curK;
+        /* binary search */
+        if (curK < k) {
+            k -= curK;
             p = p->right;
         } else {
             p = p->left;
