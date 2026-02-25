@@ -36,3 +36,7 @@ BST* bstMerge(BST*, BST*);
 // Если k > размера дерева, или k<=0, или tree = NULL, возвращает 0
 // и устанавливает err = true. Если ошибок нет, err = false.
 int bstKthMin(BST* tree, int k, bool* err);
+// Удаляет узел с заданным значением в дереве.
+// Если был передан NULL или дерево является NULL-указателем, возвращает false,
+// иначе - true.
+bool bstDelete(BST** tree, int value);
