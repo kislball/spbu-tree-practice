@@ -120,7 +120,8 @@ void testKthMin()
     assert(bstInsert(tree, 13));
 
     for (int i = 1; i <= 13; i++) {
-        assert(bstKthMin(tree, i) == i);
+        bool err = false;
+        assert(bstKthMin(tree, i, &err) == i && !err);
     }
 }
 

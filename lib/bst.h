@@ -33,5 +33,6 @@ bool bstIsValid(BST* tree);
 // Объединяет два дерева в одно. В случае ошибки возвращает NULL
 BST* bstMerge(BST*, BST*);
 // Возвращает k-ый минимальный элемент в дереве.
-// Если k > размера дерева, или k<=0, или tree = NULL, возвращает 0.
-int bstKthMin(BST* tree, int k);
+// Если k > размера дерева, или k<=0, или tree = NULL, возвращает 0
+// и устанавливает err = true. Если ошибок нет, err = false.
+int bstKthMin(BST* tree, int k, bool* err);

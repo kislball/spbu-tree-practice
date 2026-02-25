@@ -239,10 +239,12 @@ BST* bstMerge(BST* a, BST* b)
     return tree;
 }
 
-int bstKthMin(BST* tree, int k)
+int bstKthMin(BST* tree, int k, bool* err)
 {
-    if (k <= 0 || tree == NULL || bstSize(tree) < k)
+    if (k <= 0 || tree == NULL || bstSize(tree) < k) {
+        *err = true;
         return 0;
+    }
 
     /* k is the kth minimum element of the subtree */
     BST* p = tree;
@@ -259,5 +261,6 @@ int bstKthMin(BST* tree, int k)
         }
     }
 
+    *err = false;
     return p->value;
 }
