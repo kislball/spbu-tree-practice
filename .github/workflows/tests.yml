@@ -1,0 +1,18 @@
+name: Tests
+on: 
+  - push
+  - pull_request
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup checkout
+        uses: actions/checkout@v5
+      - name: Build project
+        run: | 
+          cmake -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          cmake --build build
+      - name: Run tests
+        run: | 
+          cd build && make test
+  
