@@ -9,6 +9,24 @@
 #include "bstInternal.h"
 
 #include "iterator.h"
+ 
+//Вернуть узел со значением value, если не найдено - NULL.
+static BST* bstFind(BST* tree, int value)
+{
+    // tree may be NULL
+    BST* p = tree;
+    while (p) {
+        if (p->value == value)
+            break;
+        if (p->value > value) {
+            p = p->left;
+        } else {
+            p = p->right;
+        }
+    }
+    return p;
+}
+
 BST* bstNew(int val)
 {
     BST* tree = calloc(1, sizeof(*tree));
@@ -263,4 +281,45 @@ int bstKthMin(BST* tree, int k, bool* err)
 
     *err = false;
     return p->value;
+}
+
+static BST* bstDeleteInternal(BST* node, int value) {
+    if (node == NULL)
+        return NULL;
+
+    if (node->value > value) {
+        node->left = bstDeleteInternal(node->left, value);
+    } else if (node->value < value) {
+        node->right = bstDeleteInternal(node->right, value);
+    } else {
+        if (node->right == NULL && node->left == NULL) {
+            free(node);
+            return NULL;
+        } else if (node->right == NULL) {
+            BST* temp = node->left;
+            free(node);
+            return temp;
+        } else if (node->left == NULL) {
+            BST* temp = node->right;
+            free(node);
+            return temp;
+        } else {
+            BST* temp = node->right;
+            while (temp->left)
+                temp = temp->left;
+            node->value = temp->value;
+            node->right = bstDeleteInternal(node->right, node->value);
+        }
+    }
+
+    return node;
+}
+
+bool bstDelete(BST** tree, int value)
+{
+    if (tree == NULL || *tree == NULL)
+        return false;
+
+    *tree = bstDeleteInternal(*tree, value);
+    return true;
 }
