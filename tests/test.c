@@ -128,12 +128,12 @@ void testKthMin()
 void testBstDelete()
 {
     BST* tree = bstNew(20);
-    assert(bstInsert(tree,18));
-    assert(bstInsert(tree,16));
-    assert(bstInsert(tree,17));
-    assert(bstInsert(tree,25));
-    assert(bstInsert(tree,24));
-    assert(bstInsert(tree,26));
+    assert(bstInsert(tree, 18));
+    assert(bstInsert(tree, 16));
+    assert(bstInsert(tree, 17));
+    assert(bstInsert(tree, 25));
+    assert(bstInsert(tree, 24));
+    assert(bstInsert(tree, 26));
 
     assert(bstDelete(&tree, 16));
     assert(!bstContains(tree, 16));
@@ -155,7 +155,6 @@ void testBstDelete()
     assert(bstDelete(&tree, 16));
     assert(!bstContains(tree, 16));
     assert(bstIsValid(tree));
-
 
     assert(bstContains(tree, 18));
     assert(bstContains(tree, 24));

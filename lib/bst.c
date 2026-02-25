@@ -9,7 +9,7 @@
 #include "bstInternal.h"
 
 #include "iterator.h"
- 
+
 BST* bstNew(int val)
 {
     BST* tree = calloc(1, sizeof(*tree));
@@ -266,7 +266,8 @@ int bstKthMin(BST* tree, int k, bool* err)
     return p->value;
 }
 
-static BST* bstDeleteInternal(BST* node, int value) {
+static BST* bstDeleteInternal(BST* node, int value)
+{
     if (node == NULL)
         return NULL;
 
