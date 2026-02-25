@@ -10,23 +10,6 @@
 
 #include "iterator.h"
  
-//Вернуть узел со значением value, если не найдено - NULL.
-static BST* bstFind(BST* tree, int value)
-{
-    // tree may be NULL
-    BST* p = tree;
-    while (p) {
-        if (p->value == value)
-            break;
-        if (p->value > value) {
-            p = p->left;
-        } else {
-            p = p->right;
-        }
-    }
-    return p;
-}
-
 BST* bstNew(int val)
 {
     BST* tree = calloc(1, sizeof(*tree));
