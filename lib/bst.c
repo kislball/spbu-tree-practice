@@ -17,7 +17,8 @@ BST* bstNew(int val)
         return NULL;
     }
     tree->value = val;
-    tree->isRoot = true;
+    tree->data.isRoot = true;
+    tree->data.childrenCount = 0;
     return tree;
 }
 
@@ -29,7 +30,8 @@ BST* bstNewChild(BST* root, int val)
         return NULL;
     }
     tree->value = val;
-    tree->isRoot = false;
+    tree->data.isRoot = false;
+    tree->data.childrenCount = 0;
     tree->modVersion.pBase = &root->modVersion.base;
     return tree;
 }
@@ -103,6 +105,8 @@ static bool bstInsertInternal(BST* root, BST* node, int val, bool* err)
             res = bstInsertInternal(root, node->right, val, err);
         }
     }
+    if (res)
+        node->data.childrenCount++;
     return res;
 }
 
@@ -129,7 +133,7 @@ int bstSize(BST* bst)
 {
     if (bst == NULL)
         return 0;
-    return 1 + bstSize(bst->left) + bstSize(bst->right);
+    return 1 + bst->data.childrenCount;
 }
 
 int bstHeight(BST* bst)
@@ -233,4 +237,30 @@ BST* bstMerge(BST* a, BST* b)
     iteratorFree(&itA);
     iteratorFree(&itB);
     return tree;
+}
+
+int bstKthMin(BST* tree, int k, bool* err)
+{
+    if (k <= 0 || tree == NULL || bstSize(tree) < k) {
+        *err = true;
+        return 0;
+    }
+
+    /* k is the kth minimum element of the subtree */
+    BST* p = tree;
+    while (k > 0) {
+        int curK = bstSize(p->left) + 1;
+        if (curK == k)
+            break;
+        /* binary search */
+        if (curK < k) {
+            k -= curK;
+            p = p->right;
+        } else {
+            p = p->left;
+        }
+    }
+
+    *err = false;
+    return p->value;
 }

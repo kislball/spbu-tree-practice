@@ -101,6 +101,30 @@ void testMerge()
     bstFree(&final);
 }
 
+void testKthMin()
+{
+    BST* tree = bstNew(6);
+    assert(tree != NULL);
+    assert(bstInsert(tree, 4));
+    assert(bstInsert(tree, 2));
+    assert(bstInsert(tree, 5));
+    assert(bstInsert(tree, 1));
+    assert(bstInsert(tree, 3));
+    assert(bstInsert(tree, 10));
+    assert(bstInsert(tree, 8));
+    assert(bstInsert(tree, 7));
+    assert(bstInsert(tree, 9));
+    assert(bstInsert(tree, 4));
+    assert(bstInsert(tree, 12));
+    assert(bstInsert(tree, 11));
+    assert(bstInsert(tree, 13));
+
+    for (int i = 1; i <= 13; i++) {
+        bool err = false;
+        assert(bstKthMin(tree, i, &err) == i && !err);
+    }
+}
+
 int main()
 {
     BST* tree = bstNew(25);
@@ -123,5 +147,6 @@ int main()
 
     testIterators();
     testMerge();
+    testKthMin();
     return 0;
 }

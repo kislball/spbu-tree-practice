@@ -68,5 +68,5 @@ unsigned stackNodeGetVersion(StackNode* node)
     if (!node)
         return ((unsigned)-1);
 
-    return node->data->isRoot ? node->data->modVersion.base : *node->data->modVersion.pBase;
+    return node->data->data.isRoot ? node->data->modVersion.base : *node->data->modVersion.pBase;
 }
