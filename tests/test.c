@@ -125,6 +125,14 @@ void testKthMin()
     }
 }
 
+void testDeleteNode(BST** root, int value)
+{
+    assert(bstDelete(root, value));
+    assert(!bstContains(*root, value));
+    assert(bstIsValid(*root));
+    assert(bstIsValidMetaData(*root));
+}
+
 void testBstDelete()
 {
     BST* tree = bstNew(20);
@@ -135,42 +143,15 @@ void testBstDelete()
     assert(bstInsert(tree, 24));
     assert(bstInsert(tree, 26));
 
-    assert(bstDelete(&tree, 16));
-    assert(!bstContains(tree, 16));
-    assert(bstIsValid(tree));
-
-    assert(bstDelete(&tree, 17));
-    assert(!bstContains(tree, 17));
-    assert(bstIsValid(tree));
-
-    assert(bstDelete(&tree, 20));
-    assert(!bstContains(tree, 20));
-    assert(bstIsValid(tree));
-
-    assert(bstDelete(&tree, 25));
-    assert(!bstContains(tree, 25));
-    assert(bstIsValid(tree));
-
-    // В дереве нет
-    assert(bstDelete(&tree, 16));
-    assert(!bstContains(tree, 16));
-    assert(bstIsValid(tree));
-
-    assert(bstContains(tree, 18));
-    assert(bstContains(tree, 24));
-    assert(bstContains(tree, 26));
-
-    assert(bstDelete(&tree, 18));
-    assert(!bstContains(tree, 18));
-    assert(bstIsValid(tree));
-
-    assert(bstDelete(&tree, 24));
-    assert(!bstContains(tree, 24));
-    assert(bstIsValid(tree));
-
-    assert(bstDelete(&tree, 26));
-    assert(!bstContains(tree, 26));
-    assert(bstIsValid(tree));
+    testDeleteNode(&tree, 16);
+    testDeleteNode(&tree, 17);
+    testDeleteNode(&tree, 20);
+    testDeleteNode(&tree, 25);
+    // Нет в дереве
+    testDeleteNode(&tree, 16);
+    testDeleteNode(&tree, 18);
+    testDeleteNode(&tree, 24);
+    testDeleteNode(&tree, 26);
 
     assert(tree == NULL);
     assert(!bstDelete(NULL, 1234));

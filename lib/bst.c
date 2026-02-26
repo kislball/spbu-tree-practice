@@ -266,16 +266,17 @@ int bstKthMin(BST* tree, int k, bool* err)
     return p->value;
 }
 
-static BST* bstDeleteInternal(BST* node, int value)
+static BST* bstDeleteInternal(BST* node, int value, bool* isDeleted)
 {
     if (node == NULL)
         return NULL;
 
     if (node->value > value) {
-        node->left = bstDeleteInternal(node->left, value);
+        node->left = bstDeleteInternal(node->left, value, isDeleted);
     } else if (node->value < value) {
-        node->right = bstDeleteInternal(node->right, value);
+        node->right = bstDeleteInternal(node->right, value, isDeleted);
     } else {
+        *isDeleted = true;
         if (node->right == NULL && node->left == NULL) {
             free(node);
             return NULL;
@@ -292,10 +293,13 @@ static BST* bstDeleteInternal(BST* node, int value)
             while (temp->left)
                 temp = temp->left;
             node->value = temp->value;
-            node->right = bstDeleteInternal(node->right, node->value);
+            node->right = bstDeleteInternal(node->right, node->value, isDeleted);
         }
     }
 
+    if (*isDeleted) {
+        node->data.childrenCount--;
+    }
     return node;
 }
 
@@ -304,6 +308,28 @@ bool bstDelete(BST** tree, int value)
     if (tree == NULL || *tree == NULL)
         return false;
 
-    *tree = bstDeleteInternal(*tree, value);
+    bool isDeleted = false;
+    *tree = bstDeleteInternal(*tree, value, &isDeleted);
     return true;
+}
+
+// Возвращает количество детей, если метаданные неверны, то возвращает -1
+static int isValidMetaDataChild(BST* node)
+{
+    if (node == NULL)
+        return 0;
+    if (node->data.isRoot)
+        return -1;
+    int children = isValidMetaDataChild(node->left) + isValidMetaDataChild(node->right);
+    return children == node->data.childrenCount;
+}
+
+bool bstIsValidMetaData(BST* root)
+{
+    if (root == NULL)
+        return true;
+    if (!root->data.isRoot)
+        return false;
+    int children = 2 + +isValidMetaDataChild(root->left) + isValidMetaDataChild(root->right);
+    return children == root->data.childrenCount;
 }
