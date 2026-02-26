@@ -312,3 +312,24 @@ bool bstDelete(BST** tree, int value)
     *tree = bstDeleteInternal(*tree, value, &isDeleted);
     return true;
 }
+
+// Возвращает количество детей, если метаданные неверны, то возвращает -1
+static int isValidMetaDataChild(BST* node)
+{
+    if (node == NULL)
+        return 0;
+    if (node->data.isRoot)
+        return -1;
+    int children = isValidMetaDataChild(node->left) + isValidMetaDataChild(node->right);
+    return children == node->data.childrenCount;
+}
+
+bool bstIsValidMetaData(BST* root)
+{
+    if (root == NULL)
+        return true;
+    if (!root->data.isRoot)
+        return false;
+    int children = 2 + +isValidMetaDataChild(root->left) + isValidMetaDataChild(root->right);
+    return children == root->data.childrenCount;
+}
